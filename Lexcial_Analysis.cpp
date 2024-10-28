@@ -6,8 +6,34 @@
 #include"Compilation_Principle.h"
 
 
-std::map<std::string, std::string> kw_map, op_map;
-std::map<char, int> state_next[1001];
+std::map<std::string, std::string> kw_map, op_map, se_map;
+//DFA
+int next[12][9] = 
+   {{0, 2, -1, 1, 4, 5, 6, 7, 12},
+    {0, 1, 11, 1, 4, 5, -1, -1, -1},
+    {0, 2, 3, -1, 4, 5, -1, -1, -1},
+    {0, 3, -1, -1, 4, 5, -1, -1, -1},
+    {0, 2, -1, -1, 4, 5, 6, 9, -1},
+    {0, 2, 0, 1, 0, 5, 6, 9, 12},
+    {-1, 7, -1, 7, -1, -1, -1, -1, -1},
+    {-1, -1, -1, -1, -1, -1, 8, -1, -1},
+    {0, -1, -1, -1, 4, 5, -1, -1, -1},
+    {-1, 9, 9, 9, -1, -1, -1, 10, -1},
+    {0, -1, -1, -1, 4, 5, -1, -1, -1},
+    {-1, -1, -1, 1, -1, -1, -1, -1, -1}};
+int if_identify[12][9] = 
+   {{0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 1, 0, 1, 1, 0, 0, 0},
+    {1, 0, 0, 0, 1, 1, 0, 0, 0},
+    {1, 0, 0, 0, 1, 1, 0, 0, 0},
+    {1, 1, 0, 0, 0, 1, 1, 1, 0},
+    {1, 1, 0, 1, 0, 1, 1, 1, 1},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 0, 0, 0, 1, 1, 0, 0, 0},
+    {0, 0, 0, 1, 0, 0, 0, 0, 0}};
 
 
 std::pair<std::string, std::string> identify_kw_and_idn(std::string s)
@@ -31,6 +57,16 @@ std::pair<std::string, std::string> identify_op(std::string s)
         exit(EXIT_FAILURE);
     }
     return {"OP", op_map[s]};
+}
+
+std::pair<std::string, std::string> identify_se(std::string s)
+{
+    if (!se_map.count(s))
+    {
+        std::cerr << "SE " << s << "not found !" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    return {"SE", se_map[s]};
 }
 
 std::pair<std::string, std::string> identify_int(std::string s)
@@ -86,9 +122,31 @@ void init_lexcial_analysis()
     op_map["||"] = "0";
 
 
-    //state_next
+    //se
+    se_map["("] = "0";
+    se_map[")"] = "0";
+    se_map["{"] = "0";
+    se_map["}"] = "0";
+    se_map[";"] = "0";
+    se_map[","] = "0";
+
 
     return;
+}
+
+
+int get_char_id(char c)
+{
+    if (c == ' ' || c == '\n') return 0;
+    if ('0' <= c && c <= '9') return 1;
+    if (c == '.') return 2;
+    if (c == '_' || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')) return 3;
+    if (c == '+' || c == '-' || c == '*' || c == '/' || c == '!' || c == '=' || c == '<' || c == '>' || c == '&' || c == '|') return 4;
+    if (c == '{' || c == '}' || c == '(' || c == ')' || c == ';' || c == ',') return 5;
+    if (c == '\'') return 6;
+    if (c == '\"') return 7;
+    if (c == '$') return 8;
+    exit(EXIT_FAILURE);
 }
 
 
@@ -105,20 +163,72 @@ std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexc
         std::cerr << "Error opening file: " << input_path << std::endl;
         exit(EXIT_FAILURE);
     }
+
     char c;
     std::string buffer = "";
-    while (input_file >> c)
+    std::cout << "Read program below: " << std::endl;
+    while (input_file.get(c))
     {
-        buffer += c;
-        now_state = state_next[now_state][c];
-        // DFA
+        std::cout<<c;
+        // --------------------------- DFA ---------------------------------
+        int char_id = get_char_id(c);
 
+        if (if_identify[now_state][char_id])
+        {   
+            if (now_state == 1)
+            {
+                lexcial.push_back({buffer, identify_kw_and_idn(buffer)});
+                buffer = "";
+            }
+            else if (now_state == 2)
+            {
+                lexcial.push_back({buffer, identify_int(buffer)});
+                buffer = "";
+            }
+            else if (now_state == 3)
+            {
+                lexcial.push_back({buffer, identify_float(buffer)});
+                buffer = "";
+            }
+            else if (now_state == 4)
+            {
+                lexcial.push_back({buffer, identify_op(buffer)});
+                buffer = "";
+            }
+            else if (now_state == 5)
+            {
+                lexcial.push_back({buffer, identify_se(buffer)});
+                buffer = "";
+            }
+            else if (now_state == 8)
+            {
+                lexcial.push_back({buffer, identify_char(buffer)});
+                buffer = "";
+            }
+            else if (now_state == 10)
+            {
+                lexcial.push_back({buffer, identify_string(buffer)});
+                buffer = "";
+            }
+            else if (now_state == 11)
+            {
+                lexcial.push_back({".", {"DOT", "-"}});
+                buffer = "";
+            }
+                
+        }
+
+        now_state = next[now_state][char_id];
+        if (now_state == 12) break;
+        if (c != '\'' && c != '\"' && c != ' ' && c != '\n')
+            buffer += c;
     }
     input_file.close();
 
 
     std::ofstream lexcial_output_file(lexcial_output_path);
     if (!lexcial_output_file)
+
     {
         std::cerr << "Error opening file: " << lexcial_output_path << std::endl;
         exit(EXIT_FAILURE);
@@ -132,8 +242,6 @@ std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexc
     lexcial_output_file.close();
     return lexcial;
 }
-
-
 
 
 

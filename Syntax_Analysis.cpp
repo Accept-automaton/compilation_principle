@@ -4,6 +4,12 @@
 #include<vector>
 #include"Compilation_Principle.h"
 
+
+void init_syntax_analysis()
+{
+    return;
+}
+
 void syntax_analysis(std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexcial, const char *syntax_output_path)
 {
     std::vector< std::pair<std::string, std::pair<std::string, std::string> > > syntax;
@@ -26,5 +32,4 @@ void syntax_analysis(std::vector< std::pair<std::string, std::pair<std::string, 
     syntax_output_file.close();
     return;
 }
-
 
