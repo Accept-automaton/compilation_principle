@@ -101,7 +101,7 @@ void init_lexcial_analysis()
     kw_map["return"] = "3";
     kw_map["const"] = "4";
     kw_map["main"] = "5";
-    kw_map["struct"] = "6";
+    kw_map["struct"] = kw_map["union"] = "6";
     // kw_map["float"] = "0";
     // kw_map["char"] = "0";
     
