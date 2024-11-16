@@ -13,7 +13,7 @@ int next[12][9] =
     {0, 1, 11, 1, 4, 5, -1, -1, -1},
     {0, 2, 3, -1, 4, 5, -1, -1, -1},
     {0, 3, -1, -1, 4, 5, -1, -1, -1},
-    {0, 2, -1, -1, 4, 5, 6, 9, -1},
+    {0, 2, -1, 1, 4, 5, 6, 9, -1},
     {0, 2, 0, 1, 0, 5, 6, 9, 12},
     {-1, 7, -1, 7, -1, -1, -1, -1, -1},
     {-1, -1, -1, -1, -1, -1, 8, -1, -1},
@@ -26,7 +26,7 @@ int if_identify[12][9] =
     {1, 0, 1, 0, 1, 1, 0, 0, 0},
     {1, 0, 0, 0, 1, 1, 0, 0, 0},
     {1, 0, 0, 0, 1, 1, 0, 0, 0},
-    {1, 1, 0, 0, 0, 1, 1, 1, 0},
+    {1, 1, 0, 1, 0, 1, 1, 1, 0},
     {1, 1, 0, 1, 0, 1, 1, 1, 1},
     {0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -40,7 +40,7 @@ std::pair<std::string, std::string> identify_kw_and_idn(std::string s)
 {
     if (!kw_map.count(s))
     {
-        return {"IDN", s};
+        return {"Ident", s};
     }
     else
     {
@@ -63,7 +63,7 @@ std::pair<std::string, std::string> identify_se(std::string s)
 {
     if (!se_map.count(s))
     {
-        std::cerr << "SE " << s << "not found !" << std::endl;
+        std::cerr << "SE $" << s << "$ not found !" << std::endl;
         exit(EXIT_FAILURE);
     }
     return {"SE", se_map[s]};
@@ -94,41 +94,41 @@ std::pair<std::string, std::string> identify_string(std::string s)
 
 void init_lexcial_analysis()
 {
-    //unfinish !!!!!
+    //need to add union !!!!!
     //kw
-    kw_map["int"] = "0";
-    kw_map["float"] = "0";
-    kw_map["char"] = "0";
-    kw_map["void"] = "0";
-    kw_map["return"] = "0";
-    kw_map["const"] = "0";
-    kw_map["main"] = "0";
-
+    kw_map["int"] = "1";
+    kw_map["void"] = "2";
+    kw_map["return"] = "3";
+    kw_map["const"] = "4";
+    kw_map["main"] = "5";
+    kw_map["struct"] = "6";
+    // kw_map["float"] = "0";
+    // kw_map["char"] = "0";
+    
     //op
-    op_map["!"] = "0";
-    op_map["+"] = "0";
-    op_map["-"] = "0";
-    op_map["*"] = "0";
-    op_map["/"] = "0";
-    op_map["%"] = "0";
-    op_map["="] = "0";
-    op_map[">"] = "0";
-    op_map["<"] = "0";
-    op_map["=="] = "0";
-    op_map["<="] = "0";
-    op_map[">="] = "0";
-    op_map["!="] = "0";
-    op_map["&&"] = "0";
-    op_map["||"] = "0";
+    op_map["+"] = "7";
+    op_map["-"] = "8";
+    op_map["*"] = "9";
+    op_map["/"] = "10";
+    op_map["%"] = "11";
+    op_map["="] = "12";
+    op_map[">"] = "13";
+    op_map["<"] = "14";
+    op_map["=="] = "15";
+    op_map["<="] = "16";
+    op_map[">="] = "17";
+    op_map["!="] = "18";
+    op_map["&&"] = "19";
+    op_map["||"] = "20";
 
 
     //se
-    se_map["("] = "0";
-    se_map[")"] = "0";
-    se_map["{"] = "0";
-    se_map["}"] = "0";
-    se_map[";"] = "0";
-    se_map[","] = "0";
+    se_map["("] = "21";
+    se_map[")"] = "22";
+    se_map["{"] = "23";
+    se_map["}"] = "24";
+    se_map[";"] = "25";
+    se_map[","] = "26";
 
 
     return;
@@ -137,7 +137,7 @@ void init_lexcial_analysis()
 
 int get_char_id(char c)
 {
-    if (c == ' ' || c == '\n') return 0;
+    if (c == ' ' || c == '\n' || c == '\t') return 0;
     if ('0' <= c && c <= '9') return 1;
     if (c == '.') return 2;
     if (c == '_' || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')) return 3;
@@ -155,6 +155,7 @@ std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexc
     std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexcial;
 
     // code
+    init_lexcial_analysis();
 
     int now_state = 0;
     std::ifstream input_file(input_path);
@@ -167,9 +168,16 @@ std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexc
     char c;
     std::string buffer = "";
     std::cout << "Read program below: " << std::endl;
-    while (input_file.get(c))
+    while (1)
     {
-        std::cout<<c;
+        if (!input_file.get(c))
+        {
+            c = '$';
+        }
+        // else
+        // {
+        //     std::cout<<c<<std::endl;
+        // }
         // --------------------------- DFA ---------------------------------
         int char_id = get_char_id(c);
 
@@ -220,9 +228,11 @@ std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexc
 
         now_state = next[now_state][char_id];
         if (now_state == 12) break;
-        if (c != '\'' && c != '\"' && c != ' ' && c != '\n')
+        if (c != '\'' && c != '\"' && c != ' ' && c != '\n' && c != '\t')
             buffer += c;
+        std::cout<< "Debug : " << c << ' ' << buffer << std::endl;
     }
+    std::cout<< std::endl;
     input_file.close();
 
 

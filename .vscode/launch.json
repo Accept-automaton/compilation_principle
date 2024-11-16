@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/desktop/cpp/编译原理",
-      "program": "d:/desktop/cpp/编译原理/build/Debug/outDebug",
+      "cwd": "d:/desktop/cpp/compilation_principle",
+      "program": "d:/desktop/cpp/compilation_principle/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [

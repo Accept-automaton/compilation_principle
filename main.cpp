@@ -19,17 +19,17 @@ int main(int argc, char *argv[])
     // const char *lexcial_output_path = argv[2];
     // const char *syntax_output_path = argv[3];
 
-    const char *input_path = "d:/program.txt";
+    const char *input_path = "program.txt";
     const char *lexcial_output_path = "lexcial_result.txt";
     const char *syntax_output_path = "synatx_result.txt";
 
-    init_lexcial_analysis();
+    
     init_syntax_analysis();
 
 
     std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexcial;
     lexcial = lexcial_analysis(input_path, lexcial_output_path);
-
+    syntax_analysis(lexcial, syntax_output_path);
 
 
     return 0;
