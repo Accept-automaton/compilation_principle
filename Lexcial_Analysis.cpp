@@ -96,14 +96,13 @@ void init_lexcial_analysis()
 {
     //need to add union !!!!!
     //kw
-    kw_map["int"] = "1";
+    kw_map["int"] = kw_map["float"] = kw_map["char"] = "1";
     kw_map["void"] = "2";
     kw_map["return"] = "3";
     kw_map["const"] = "4";
     kw_map["main"] = "5";
     kw_map["struct"] = kw_map["union"] = "6";
-    // kw_map["float"] = "0";
-    // kw_map["char"] = "0";
+    kw_map["switch"] = "100";
     
     //op
     op_map["+"] = "7";

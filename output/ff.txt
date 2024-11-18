@@ -1,0 +1,189 @@
+**************t*****************
+!
+-
+Tag
+)
+*
+,
++
+int
+void
+INT
+(
+Ident
+28
+>=
+{
+;
+%
+$
+struct
+==
+const
+<
+=
+29
+>
+}
+!=
+/
+<=
+return
+**************not t*****************
+structBlockItem
+structBlock
+structDef
+opVar
+structDecl
+constExp
+assignExpAtom
+assignExp
+eqExpAtom
+relExpAtom
+relExp
+stmt
+lVal
+structName
+funcType
+opBlock
+argVarDef
+bType
+argStructDef
+blockItem
+addExp
+funcDef
+funcFParam
+initVal
+argFunctionR
+argVarDecl
+constDef
+block
+mulExp
+compUnit
+program
+constInitVal
+decl
+varDef
+argConst
+eqExp
+argFunctionF
+argExp
+constDecl
+primaryExp
+exp
+unaryExp
+number
+funcFParams
+varDecl
+unaryOp
+callFunc
+funcRParams
+funcRParam
+mulExpAtom
+addExpAtom
+************* FIRST ************
+   structBlockItem -> ! + - Ident ( void const return $ struct int INT ; { 
+       structBlock -> { 
+         structDef -> Ident 
+             opVar -> ; Ident 
+        structDecl -> struct 
+          constExp -> INT ( Ident - + ! 
+     assignExpAtom -> $ = 
+         assignExp -> + ! - Ident ( INT 
+         eqExpAtom -> $ == != 
+        relExpAtom -> $ >= < <= > 
+            relExp -> ! + - Ident INT ( 
+              stmt -> return { ; INT ( Ident - + ! 
+              lVal -> Ident 
+        structName -> Ident 
+          funcType -> void 
+           opBlock -> Ident { 
+         argVarDef -> $ = 
+             bType -> int 
+      argStructDef -> $ , 
+         blockItem -> ! + - Ident ( const return $ struct int INT { ; 
+            addExp -> INT ( Ident - + ! 
+           funcDef -> void 
+        funcFParam -> struct int 
+           initVal -> ! + - Ident INT ( 
+      argFunctionR -> $ , 
+        argVarDecl -> $ , 
+          constDef -> Ident 
+             block -> { 
+            mulExp -> + ! - Ident ( INT 
+          compUnit -> $ int void struct const 
+           program -> $ const int struct void 
+      constInitVal -> ! + - Ident INT ( 
+              decl -> struct const int 
+            varDef -> Ident 
+          argConst -> $ , 
+             eqExp -> ( INT Ident - ! + 
+      argFunctionF -> $ , 
+            argExp -> ! INT ( Ident $ - + 
+         constDecl -> const 
+        primaryExp -> INT ( 
+               exp -> INT ( Ident - + ! 
+          unaryExp -> ( INT Ident - ! + 
+            number -> INT 
+       funcFParams -> $ struct int 
+           varDecl -> int 
+           unaryOp -> ! + - 
+          callFunc -> $ ( 
+       funcRParams -> $ + ! - INT Ident ( 
+        funcRParam -> ! + - Ident INT ( 
+        mulExpAtom -> % $ * / 
+        addExpAtom -> $ + - 
+
+************** FOLLOW *************
+   structBlockItem : } 28 29 
+       structBlock : ; Ident 
+         structDef : } - void const ! # return 28 { ; ( Ident INT + int struct 
+             opVar : } - void const ! # return 28 { ; ( Ident INT + int struct 
+        structDecl : } - void const ! # return 28 { ; ( Ident INT + int struct 
+          constExp : ; , 
+     assignExpAtom : , ; ) 
+         assignExp : , ; ) 
+         eqExpAtom : , = ) ; 
+        relExpAtom : , == != ; = ) 
+            relExp : , != ) == ; = 
+              stmt : } ( Ident - void const ! + return 29 { ; INT int struct 
+              lVal : 
+        structName : Ident { 
+          funcType : Ident 
+           opBlock : struct ; { 28 # return int + ! const void - INT Ident ( } 
+         argVarDef : , ; 
+             bType : Ident 
+      argStructDef : ; 
+         blockItem : } 
+            addExp : , ; <= = > ) >= != < == 
+           funcDef : # return struct { ; int + ! const void - INT Ident ( } 28 29 
+        funcFParam : ) , 
+           initVal : ; , 
+      argFunctionR : ) 
+        argVarDecl : ; 
+          constDef : ; , 
+             block : } 28 - void const ! # return 29 { ; ( Ident INT + int struct 
+            mulExp : ) ; = - , >= <= + == != < > 
+          compUnit : # 
+           program : # 
+      constInitVal : , ; 
+              decl : } ( Ident - void const ! + return # 28 { ; INT int struct 
+            varDef : ; , 
+          argConst : ; 
+             eqExp : , ) ; = 
+      argFunctionF : ) 
+            argExp : ; 
+         constDecl : } - void const ! # return 28 { ; ( Ident INT + int struct 
+        primaryExp : ) ; = - <= + == % , < * != > >= / 
+               exp : ; , ) 
+          unaryExp : ; ) = , * % >= > < == != + / <= - 
+            number : ; ) / >= > != % , * < == + <= = - 
+       funcFParams : ) 
+           varDecl : } - void const ! # return 28 { ; ( Ident INT + int struct 
+           unaryOp : INT ( Ident - + ! 
+          callFunc : ) ; = - <= + == % , < * != > >= / 
+       funcRParams : ) 
+        funcRParam : ) , 
+        mulExpAtom : ) ; = > < != == + <= , >= - 
+        addExpAtom : ) ; = == != < , >= <= > 
+

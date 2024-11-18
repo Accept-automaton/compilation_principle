@@ -2,6 +2,10 @@
 
 using namespace std;
 
+
+const char * output_path = "./ff.txt";
+ofstream output_file(output_path);
+
 unordered_map<string, vector<string>> production; // 存放产生式
 unordered_map<string, unordered_set<string>> FirstSet;   // 存放 FIRST 集合
 unordered_map<string, unordered_set<string>> FirstSetBeta;  // 存放 β 的 FIRST 集合
@@ -82,14 +86,14 @@ static void dividechar() {
         }
     }
 
-    cout << "**************t*****************" << endl;
+    output_file << "**************t*****************" << endl;
     for (string ch : VtSet) {
-        cout << ch << endl;
+        output_file << ch << endl;
     }
 
-    cout << "**************not t*****************" << endl;
+    output_file << "**************not t*****************" << endl;
     for (string ch : VnSet) {
-        cout << ch << endl;
+        output_file << ch << endl;
     }
 }
 
@@ -274,27 +278,32 @@ void getFollow(const string& c) {
 }
 
 void output() {
-    cout << "************* FIRST ************" << endl;
+    
+    
+    
+
+    output_file << "************* FIRST ************" << endl;
     for (const string& c : VnSet) {
         const unordered_set<string>& set = FirstSet[c];
-        cout << setw(18) << c << " -> ";
+        output_file << setw(18) << c << " -> ";
         for (const string& var : set) {
-            cout << var << " ";
+            output_file << var << " ";
         }
-        cout << endl;
+        output_file << endl;
     }
-    cout << endl;
+    output_file << endl;
 
-    cout << "************** FOLLOW *************" << endl;
+    output_file << "************** FOLLOW *************" << endl;
     for (const string& c : VnSet) {
         const unordered_set<string>& set = FollowSet[c];
-        cout << setw(18) << c << " : ";
+        output_file << setw(18) << c << " : ";
         for (const string& var : set) {
-            cout << var << " ";
+            output_file << var << " ";
         }
-        cout << endl;
+        output_file << endl;
     }
-    cout << endl;
+    output_file << endl;
+    
 }
 
 int main() {
@@ -312,5 +321,7 @@ int main() {
     Follow(); // 计算 Follow 集合
     output(); // 打印结果
 
+    output_file.close();
+    
     return 0;
 }

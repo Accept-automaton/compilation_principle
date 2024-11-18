@@ -1,7 +1,8 @@
 #include<iostream>
 #include<fstream>
 #include<sstream>
-#include <iomanip>
+#include<iomanip>
+#include<map>
 #include<string>
 #include<vector>
 #include"Compilation_Principle.h"
@@ -57,6 +58,9 @@ void init_syntax_analysis()
     map_s2i["Ident"] = 27;
     map_s2i["INT"] = 28;
     map_s2i["#"] = 29;
+    map_s2i["switch"] = 100;
+    map_s2i["float"] = 101;
+    map_s2i["char"] = 102;
 
     map_i2s[1] = "int";
     map_i2s[2] = "void";
@@ -87,6 +91,10 @@ void init_syntax_analysis()
     map_i2s[27] = "Ident";
     map_i2s[28] = "INT";
     map_i2s[29] = "#";
+
+    map_i2s[100] = "switch";
+    map_i2s[101] = "float";
+    map_i2s[102] = "char";
     return;
 }
 
@@ -307,6 +315,9 @@ void init_Productions() {
                                  "structBlockItem -> stmt structBlockItem");
     productions[92] =
         Production("structBlockItem", {"$"}, "structBlockItem -> $");
+
+
+    // need add something
     
 }
 
@@ -383,6 +394,7 @@ int stackPush(int stackTop, const Production &production) {
 }
 
 int ll1_table(int stackTop, int readerTop) {
+    // need add something
     if (stack[stackTop] == "addExp") {
         if (map_i2s[reader[readerTop]] == "!") {
             return 59;

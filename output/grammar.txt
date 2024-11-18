@@ -17,8 +17,6 @@ argVarDef -> = initVal
 argVarDef -> $
 initVal -> exp
 bType -> int
-bType -> float
-bType -> char
 funcDef -> funcType Ident ( funcFParams ) block
 funcType -> void
 funcFParams -> funcFParam argFunctionF
@@ -77,3 +75,27 @@ assignExp -> eqExp assignExpAtom
 assignExpAtom -> = eqExp assignExpAtom
 assignExpAtom -> $
 constExp ->  assignExp
+decl ->structDecl
+structDecl -> struct structName opBlock
+structName -> Ident
+opBlock -> structBlock opVar
+opBlock -> structDef
+opVar -> structDef
+opVar -> ;
+structDef -> Ident argStructDef ;
+argStructDef -> , Ident argStructDef
+argStructDef -> $
+funcFParam -> struct Tag Ident
+structBlock -> { structBlockItem }
+structBlockItem -> funcDef structBlockItem
+structBlockItem -> decl structBlockItem 28
+structBlockItem -> stmt structBlockItem 29
+structBlockItem -> $
+switchDecl -> switch ( exp ) { caseDecl defaultCaseDecl }
+defaultCaseDecl -> default : { switchBlockElem breakDecl } | $
+caseDecl -> $ 
+caseDecl -> argCaseDecl
+caseDecl -> argCaseDecl , caseDecl
+argCaseDecl -> case constExp: { blockItem breakDecl }
+breakDecl -> $ 
+breakDecl -> break;
