@@ -1,7 +1,7 @@
 void func() {
     int a = 10, b = 1;
     switch (a){
-        case 10: b = 2;
-        default: b = 3;
+        case 10 : { b = 2 ; break ;}
+        default : { b = 3 ; }
     }
 }

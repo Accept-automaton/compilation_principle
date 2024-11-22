@@ -75,7 +75,7 @@ assignExp -> eqExp assignExpAtom
 assignExpAtom -> = eqExp assignExpAtom
 assignExpAtom -> $
 constExp ->  assignExp
-decl ->structDecl
+decl -> structDecl
 structDecl -> struct structName opBlock
 structName -> Ident
 opBlock -> structBlock opVar
@@ -98,3 +98,4 @@ caseDecl -> $
 caseDecl -> case constExp : { blockItem breakDecl } caseDecl
 breakDecl -> $ 
 breakDecl -> break ;
+decl -> switchDecl
