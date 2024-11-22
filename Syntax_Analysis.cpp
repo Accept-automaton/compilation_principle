@@ -333,15 +333,9 @@ void init_Productions() {
                     "defaultCaseDecl -> default : { switchBlockElem breakDecl }");
     productions[95] = Production("defaultCaseDecl", {"$"}, "defaultCaseDecl -> $");
     productions[96] = Production("caseDecl", {"$"}, "caseDecl -> $ ");
-    productions[97] = Production("caseDecl", {"argCaseDecl"}, "caseDecl -> argCaseDecl");
-    productions[98] = Production("caseDecl", {"argCaseDecl", std::to_string(map_s2i[","]),
-                                "caseDecl"}, "caseDecl -> argCaseDecl , caseDecl");
-    productions[99] = Production("argCaseDecl", {"case", "constExp", ":",
-                                 std::to_string(map_s2i["{"]), "blockItem",
-                                 "breakDecl", std::to_string(map_s2i["}"])},
-                                 "argCaseDecl -> case constExp: { blockItem breakDecl }");
-    productions[100] = Production("breakDecl", {"$"}, "breakDecl -> $");
-    productions[101] = Production("breakDecl", {"break", std::to_string(map_s2i[";"])}, "breakDecl -> break;");
+    productions[97] = Production("caseDecl", {"case","constExp",":",std::to_string(map_s2i["{"]),"blockItem","breakDecl",std::to_string(map_s2i["}"]),"caseDecl"}, "caseDecl -> case constExp : { blockItem breakDecl } caseDecl");
+    productions[98] = Production("breakDecl", {"$"}, "breakDecl -> $");
+    productions[99] = Production("breakDecl", {"break", std::to_string(map_s2i[";"])}, "breakDecl -> break;");
 
     // need add something
     
@@ -1117,17 +1111,11 @@ int ll1_table(int stackTop, int readerTop) {
         } else {
             return -1;
         }
-    } else if (stack[stackTop] == "argCaseDecl") {
-        if (map_i2s[reader[readerTop]] == "case") {
-            return 100;
-        } else {
-            return -1;
-        }
     } else if (stack[stackTop] == "breakDecl") {
         if (map_i2s[reader[readerTop]] == "}") {
-            return 101;
+            return 99;
         } else if (map_i2s[reader[readerTop]] == "break") {
-            return 102;
+            return 100;
         } else {
             return -1;
         }
