@@ -1,0 +1,10 @@
+union node {
+  int a;
+  int b;
+  union point {
+    int x;
+    int y;            
+  };
+}a;
+
+

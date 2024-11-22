@@ -103,6 +103,11 @@ void init_lexcial_analysis()
     kw_map["main"] = "5";
     kw_map["struct"] = kw_map["union"] = "6";
     kw_map["switch"] = "100";
+    kw_map["float"] = "101";
+    kw_map["char"] = "102";
+    kw_map["case"] = "103";
+    kw_map["default"] = "105";
+    
     
     //op
     op_map["+"] = "7";
@@ -128,6 +133,7 @@ void init_lexcial_analysis()
     se_map["}"] = "24";
     se_map[";"] = "25";
     se_map[","] = "26";
+    se_map[":"] = "105";
 
 
     return;
@@ -141,7 +147,7 @@ int get_char_id(char c)
     if (c == '.') return 2;
     if (c == '_' || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')) return 3;
     if (c == '+' || c == '-' || c == '*' || c == '/' || c == '!' || c == '=' || c == '<' || c == '>' || c == '&' || c == '|') return 4;
-    if (c == '{' || c == '}' || c == '(' || c == ')' || c == ';' || c == ',') return 5;
+    if (c == '{' || c == '}' || c == '(' || c == ')' || c == ';' || c == ',' || c == ':') return 5;
     if (c == '\'') return 6;
     if (c == '\"') return 7;
     if (c == '$') return 8;
@@ -173,10 +179,10 @@ std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexc
         {
             c = '$';
         }
-        // else
-        // {
-        //     std::cout<<c<<std::endl;
-        // }
+        else
+        {
+            std::cout<<c;
+        }
         // --------------------------- DFA ---------------------------------
         int char_id = get_char_id(c);
 
@@ -229,7 +235,6 @@ std::vector< std::pair<std::string, std::pair<std::string, std::string> > > lexc
         if (now_state == 12) break;
         if (c != '\'' && c != '\"' && c != ' ' && c != '\n' && c != '\t')
             buffer += c;
-        std::cout<< "Debug : " << c << ' ' << buffer << std::endl;
     }
     std::cout<< std::endl;
     input_file.close();

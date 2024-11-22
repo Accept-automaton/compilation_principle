@@ -23,7 +23,7 @@ class Production {
         : l_str(l_str), r_str(r_str), prod(prod) {}
 };
 
-Production productions[93];
+Production productions[150];
 std::map<int, std::string> map_i2s;
 std::map<std::string, int> map_s2i;
 
@@ -61,6 +61,9 @@ void init_syntax_analysis()
     map_s2i["switch"] = 100;
     map_s2i["float"] = 101;
     map_s2i["char"] = 102;
+    map_s2i["case"] = 103;
+    map_s2i["default"] = 104;
+    map_s2i[":"] = 105;
 
     map_i2s[1] = "int";
     map_i2s[2] = "void";
@@ -95,6 +98,9 @@ void init_syntax_analysis()
     map_i2s[100] = "switch";
     map_i2s[101] = "float";
     map_i2s[102] = "char";
+    map_i2s[103] = "case";
+    map_i2s[104] = "default";
+    map_i2s[105] = ":";
     return;
 }
 
@@ -315,7 +321,27 @@ void init_Productions() {
                                  "structBlockItem -> stmt structBlockItem");
     productions[92] =
         Production("structBlockItem", {"$"}, "structBlockItem -> $");
-
+    productions[93] = 
+        Production("switchDecl", 
+                   {std::to_string(map_s2i["switch"]), std::to_string(map_s2i["("]), 
+                    "exp", std::to_string(map_s2i[")"]), std::to_string(map_s2i["{"]), 
+                    "caseDecl", "defaultCaseDecl", std::to_string(map_s2i["}"])},
+                   "switchDecl -> switch ( exp ) { caseDecl defaultCaseDecl }");
+    productions[94] = 
+        Production("defaultCaseDecl", {"default", ":", std::to_string(map_s2i["{"]),
+                    "switchBlockElem", "breakDecl", std::to_string(map_s2i["}"])},
+                    "defaultCaseDecl -> default : { switchBlockElem breakDecl }");
+    productions[95] = Production("defaultCaseDecl", {"$"}, "defaultCaseDecl -> $");
+    productions[96] = Production("caseDecl", {"$"}, "caseDecl -> $ ");
+    productions[97] = Production("caseDecl", {"argCaseDecl"}, "caseDecl -> argCaseDecl");
+    productions[98] = Production("caseDecl", {"argCaseDecl", std::to_string(map_s2i[","]),
+                                "caseDecl"}, "caseDecl -> argCaseDecl , caseDecl");
+    productions[99] = Production("argCaseDecl", {"case", "constExp", ":",
+                                 std::to_string(map_s2i["{"]), "blockItem",
+                                 "breakDecl", std::to_string(map_s2i["}"])},
+                                 "argCaseDecl -> case constExp: { blockItem breakDecl }");
+    productions[100] = Production("breakDecl", {"$"}, "breakDecl -> $");
+    productions[101] = Production("breakDecl", {"break", std::to_string(map_s2i[";"])}, "breakDecl -> break;");
 
     // need add something
     
@@ -1067,6 +1093,44 @@ int ll1_table(int stackTop, int readerTop) {
         } else {
             return -1;
         }
+    } else if (stack[stackTop] == "switchDecl") {
+        if (map_i2s[reader[readerTop]] == "switch") {
+            return 94;
+        } else {
+            return -1;
+        }
+    } else if (stack[stackTop] == "defaultCaseDecl") {
+        if (map_i2s[reader[readerTop]] == "}") {
+            return 96;
+        } else if (map_i2s[reader[readerTop]] == "default") {
+            return 95;
+        } else {
+            return -1;
+        }
+    } else if (stack[stackTop] == "caseDecl") {
+        if (map_i2s[reader[readerTop]] == "}") {
+            return 97;
+        } else if (map_i2s[reader[readerTop]] == "default") {
+            return 97;
+        } else if (map_i2s[reader[readerTop]] == "case") {
+            return 98;
+        } else {
+            return -1;
+        }
+    } else if (stack[stackTop] == "argCaseDecl") {
+        if (map_i2s[reader[readerTop]] == "case") {
+            return 100;
+        } else {
+            return -1;
+        }
+    } else if (stack[stackTop] == "breakDecl") {
+        if (map_i2s[reader[readerTop]] == "}") {
+            return 101;
+        } else if (map_i2s[reader[readerTop]] == "break") {
+            return 102;
+        } else {
+            return -1;
+        }
     } else {
         std::cout << "语法错误" << std::endl;
     }
@@ -1083,9 +1147,11 @@ void syntax_analysis(std::vector< std::pair<std::string, std::pair<std::string, 
     int stackTop = 1;
     int readerTop = 0;
     int index = 0;
+    
     init_syntax_analysis();
-    init_Productions();
 
+    init_Productions();
+    
     stack.insert(stack.begin(), std::to_string(map_s2i["#"]));
     stack.push_back("program");
 
