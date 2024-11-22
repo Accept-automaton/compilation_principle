@@ -47,8 +47,8 @@ void init_syntax_analysis()
     map_s2i["<="] = 16;
     map_s2i[">="] = 17;
     map_s2i["!="] = 18;
-    map_s2i["&&"] = 19; // Not required to implement, but added in order
-    map_s2i["||"] = 20; // Not required to implement, but added in order
+    map_s2i["&&"] = 19; 
+    map_s2i["||"] = 20; 
     map_s2i["("] = 21;
     map_s2i[")"] = 22;
     map_s2i["{"] = 23;
@@ -328,15 +328,15 @@ void init_Productions() {
                     "caseDecl", "defaultCaseDecl", std::to_string(map_s2i["}"])},
                    "switchDecl -> switch ( exp ) { caseDecl defaultCaseDecl }");
     productions[94] = 
-        Production("defaultCaseDecl", {"default", ":", std::to_string(map_s2i["{"]),
-                    "switchBlockElem", "breakDecl", std::to_string(map_s2i["}"])},
-                    "defaultCaseDecl -> default : { switchBlockElem breakDecl }");
+        Production("defaultCaseDecl", {std::to_string(map_s2i["default"]), std::to_string(map_s2i[":"]) , std::to_string(map_s2i["{"]),
+                    "blockItem", "breakDecl", std::to_string(map_s2i["}"])},
+                    "defaultCaseDecl -> default : { blockItem breakDecl }");
     productions[95] = Production("defaultCaseDecl", {"$"}, "defaultCaseDecl -> $");
     productions[96] = Production("caseDecl", {"$"}, "caseDecl -> $ ");
-    productions[97] = Production("caseDecl", {"case","constExp",":",std::to_string(map_s2i["{"]),"blockItem","breakDecl",std::to_string(map_s2i["}"]),"caseDecl"}, "caseDecl -> case constExp : { blockItem breakDecl } caseDecl");
+    productions[97] = Production("caseDecl", {std::to_string(map_s2i["case"]),"constExp",std::to_string(map_s2i[":"]),std::to_string(map_s2i["{"]),"blockItem","breakDecl",std::to_string(map_s2i["}"]), "caseDecl"}, "caseDecl -> case constExp : { blockItem breakDecl } caseDecl");
     productions[98] = Production("breakDecl", {"$"}, "breakDecl -> $");
     productions[99] = Production("breakDecl", {"break", std::to_string(map_s2i[";"])}, "breakDecl -> break;");
-
+    productions[100] = Production("decl", {"switchDecl"}, "decl -> switchDecl");
     // need add something
     
 }
@@ -456,6 +456,8 @@ int ll1_table(int stackTop, int readerTop) {
             return 62;
         } else if (map_i2s[reader[readerTop]] == ">=") {
             return 62;
+        } else if (map_i2s[reader[readerTop]] == ":") {
+            return 62;
         } else {
             return -1;
         }
@@ -550,6 +552,8 @@ int ll1_table(int stackTop, int readerTop) {
             return 75;
         } else if (map_i2s[reader[readerTop]] == ";") {
             return 75;
+        } else if (map_i2s[reader[readerTop]] == ":") {
+            return 75;
         } else if (map_i2s[reader[readerTop]] == "=") {
             return 74;
         } else {
@@ -595,6 +599,8 @@ int ll1_table(int stackTop, int readerTop) {
         } else if (map_i2s[reader[readerTop]] == "}") {
             return 29;
         } else if (map_i2s[reader[readerTop]] == "struct") {
+            return 27;
+        } else if (map_i2s[reader[readerTop]] == "switch") {
             return 27;
         } else {
             return -1;
@@ -700,6 +706,8 @@ int ll1_table(int stackTop, int readerTop) {
             return 5;
         } else if (map_i2s[reader[readerTop]] == "struct") {
             return 77;
+        } else if (map_i2s[reader[readerTop]] == "switch") {
+            return 100;
         } else {
             return -1;
         }
@@ -732,6 +740,8 @@ int ll1_table(int stackTop, int readerTop) {
             return 72;
         } else if (map_i2s[reader[readerTop]] == "==") {
             return 70;
+        } else if (map_i2s[reader[readerTop]] == ":") {
+            return 72;
         } else {
             return -1;
         }
@@ -884,6 +894,8 @@ int ll1_table(int stackTop, int readerTop) {
             return 58;
         } else if (map_i2s[reader[readerTop]] == ">") {
             return 58;
+        }else if (map_i2s[reader[readerTop]] == ":") {
+            return 58;
         } else {
             return -1;
         }
@@ -963,6 +975,8 @@ int ll1_table(int stackTop, int readerTop) {
         } else if (map_i2s[reader[readerTop]] == "==") {
             return 68;
         } else if (map_i2s[reader[readerTop]] == "=") {
+            return 68;
+        } else if (map_i2s[reader[readerTop]] == ":") {
             return 68;
         } else if (map_i2s[reader[readerTop]] == ">") {
             return 65;
@@ -1089,38 +1103,40 @@ int ll1_table(int stackTop, int readerTop) {
         }
     } else if (stack[stackTop] == "switchDecl") {
         if (map_i2s[reader[readerTop]] == "switch") {
-            return 94;
+            return 93;
         } else {
             return -1;
         }
     } else if (stack[stackTop] == "defaultCaseDecl") {
         if (map_i2s[reader[readerTop]] == "}") {
-            return 96;
-        } else if (map_i2s[reader[readerTop]] == "default") {
             return 95;
+        } else if (map_i2s[reader[readerTop]] == "default") {
+            return 94;
         } else {
             return -1;
         }
     } else if (stack[stackTop] == "caseDecl") {
         if (map_i2s[reader[readerTop]] == "}") {
-            return 97;
+            return 96;
         } else if (map_i2s[reader[readerTop]] == "default") {
-            return 97;
+            return 96;
+        } else if (map_i2s[reader[readerTop]] == ":") {
+            return 96;
         } else if (map_i2s[reader[readerTop]] == "case") {
-            return 98;
+            return 97;
         } else {
             return -1;
         }
     } else if (stack[stackTop] == "breakDecl") {
         if (map_i2s[reader[readerTop]] == "}") {
-            return 99;
+            return 98;
         } else if (map_i2s[reader[readerTop]] == "break") {
-            return 100;
+            return 99;
         } else {
             return -1;
         }
     } else {
-        std::cout << "语法错误" << std::endl;
+        std::cout << "syntax error" << std::endl;
     }
     return -1;
 }

@@ -57,7 +57,7 @@ string trim(const string& str) {
 static void dividechar() {
     vector<string> grammarStr = {};
 
-    grammarStr = getFileContext("grammar.txt");
+    grammarStr = getFileContext("./output/grammar.txt");
         
     for (string str : grammarStr) {
         vector<string> parts = split(str, "->");

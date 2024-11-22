@@ -106,7 +106,7 @@ void init_lexcial_analysis()
     kw_map["float"] = "101";
     kw_map["char"] = "102";
     kw_map["case"] = "103";
-    kw_map["default"] = "105";
+    kw_map["default"] = "104";
     
     
     //op
