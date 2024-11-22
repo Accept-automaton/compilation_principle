@@ -16,6 +16,7 @@ const
 {
 ;
 default
+break
 switchBlockElem
 %
 $
@@ -25,12 +26,10 @@ struct
 !=
 }
 INT
-constExp:
 (
 Ident
 switch
 )
-break;
 :
 =
 ==
@@ -101,7 +100,7 @@ addExpAtom
              opVar -> ; Ident 
         structDecl -> struct 
           constExp -> INT ( Ident - + ! 
-         breakDecl -> break; $ 
+         breakDecl -> break $ 
      assignExpAtom -> $ = 
          assignExp -> + ! - Ident ( INT 
          eqExpAtom -> $ == != 
@@ -155,55 +154,55 @@ addExpAtom
         switchDecl : 
    structBlockItem : } 
        structBlock : ; Ident 
-         structDef : } - void const break; ! ; { ( Ident INT + int struct # return 
-             opVar : } - void const break; ! ; { ( Ident INT + int struct # return 
-        structDecl : } - void const break; ! ; { ( Ident INT + int struct # return 
-          constExp : ; , 
+         structDef : break } - void const ! ; { ( Ident INT + int struct # return 
+             opVar : break } - void const ! ; { ( Ident INT + int struct # return 
+        structDecl : break } - void const ! ; { ( Ident INT + int struct # return 
+          constExp : ; , : 
          breakDecl : } 
-     assignExpAtom : , ) ; 
-         assignExp : , ; ) 
-         eqExpAtom : , ) ; = 
-        relExpAtom : , == != ; = ) 
-            relExp : , != ) == ; = 
-              stmt : } ( Ident - void const break; ! + ; { INT int struct return 
+     assignExpAtom : , ) : ; 
+         assignExp : , ) ; : 
+         eqExpAtom : , ) ; : = 
+        relExpAtom : , == != ; = : ) 
+            relExp : , ) != == ; : = 
+              stmt : break } ( Ident - void const ! + ; { INT int struct return 
        argCaseDecl : } default , 
               lVal : 
         structName : Ident { 
           funcType : Ident 
-           opBlock : # return struct { ; int + ! break; const void - INT Ident ( } 
+           opBlock : # return struct { ; int + ! const void - INT Ident ( } break 
          argVarDef : , ; 
              bType : Ident 
       argStructDef : ; 
-         blockItem : break; } 
-            addExp : , ; <= = > ) >= != < == 
+         blockItem : break } 
+            addExp : , == < != >= ) > <= = : ; 
            funcDef : # } ( Ident - void const ! + ; { INT int struct return 
         funcFParam : ) , 
            initVal : ; , 
       argFunctionR : ) 
         argVarDecl : ; 
           constDef : ; , 
-             block : break; } - void const ! ; { ( Ident INT + int struct # return 
-            mulExp : ) ; = - , >= <= + == != < > 
+             block : break } - void const ! ; { ( Ident INT + int struct # return 
+            mulExp : , > < != == + <= >= - : = ; ) 
           compUnit : # 
            program : # 
       constInitVal : , ; 
-              decl : # } ( Ident - void const break; ! + ; { INT int struct return 
+              decl : # break } ( Ident - void const ! + ; { INT int struct return 
             varDef : ; , 
           argConst : ; 
-             eqExp : ; , ) = 
+             eqExp : , = ) : ; 
       argFunctionF : ) 
             argExp : ; 
-         constDecl : } - void const break; ! ; { ( Ident INT + int struct # return 
-        primaryExp : ) ; = - <= + == % , < * != > >= / 
+         constDecl : break } - void const ! ; { ( Ident INT + int struct # return 
+        primaryExp : ) ; = - <= : + == % , < * != > >= / 
                exp : , ) ; 
-          unaryExp : ; ) = , * % >= > < == != + / <= - 
-            number : ; ) / >= > != % , * < == + <= = - 
+          unaryExp : ; ) : = , * % >= > < == != + / <= - 
+            number : ; ) / >= > != % , * < == : + <= = - 
        funcFParams : ) 
-           varDecl : } - void const break; ! ; { ( Ident INT + int struct # return 
+           varDecl : break } - void const ! ; { ( Ident INT + int struct # return 
            unaryOp : INT ( Ident - + ! 
-          callFunc : ) ; = - <= + == % , < * != > >= / 
+          callFunc : ) ; = - <= : + == % , < * != > >= / 
        funcRParams : ) 
         funcRParam : ) , 
-        mulExpAtom : ) ; = > < != == + <= , >= - 
-        addExpAtom : ) ; = == != < , >= <= > 
+        mulExpAtom : , - >= <= + == != < > = ; : ) 
+        addExpAtom : ) ; = : == != < , >= <= > 
 
