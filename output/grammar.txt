@@ -88,11 +88,12 @@ argStructDef -> $
 funcFParam -> struct Tag Ident
 structBlock -> { structBlockItem }
 structBlockItem -> funcDef structBlockItem
-structBlockItem -> decl structBlockItem 28
-structBlockItem -> stmt structBlockItem 29
+structBlockItem -> decl structBlockItem
+structBlockItem -> stmt structBlockItem
 structBlockItem -> $
 switchDecl -> switch ( exp ) { caseDecl defaultCaseDecl }
-defaultCaseDecl -> default : { switchBlockElem breakDecl } | $
+defaultCaseDecl -> default : { switchBlockElem breakDecl } 
+defaultCaseDecl -> $
 caseDecl -> $ 
 caseDecl -> argCaseDecl
 caseDecl -> argCaseDecl , caseDecl
