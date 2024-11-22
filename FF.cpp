@@ -19,7 +19,7 @@ vector<string> getFileContext(string path) {
     vector<string> content;
     string line;
 
-    while (getline(file, line) && content.size() < 93) {
+    while (getline(file, line)) {
         content.push_back(line);
     }
     return content;
@@ -61,6 +61,7 @@ static void dividechar() {
         
     for (string str : grammarStr) {
         vector<string> parts = split(str, "->");
+        std::cout << "Read production : " << str << std::endl;
 
         
 
