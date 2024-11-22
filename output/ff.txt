@@ -2,6 +2,8 @@
 !
 -
 Tag
+*
+,
 +
 int
 void
@@ -11,25 +13,23 @@ return
 /
 <=
 >
-const
-<
 INT
 (
 Ident
 {
 ;
-default
-break
 %
 $
 struct
-*
-,
 switch
+default
+break
 )
 :
 =
 ==
+const
+<
 }
 !=
 **************not t*****************
@@ -164,7 +164,7 @@ addExpAtom
         relExpAtom : , == != ; = : ) 
             relExp : , ) != == ; : = 
               stmt : break } ( Ident - void const ! + ; { INT int struct return 
-       argCaseDecl : } default , 
+       argCaseDecl : } default case 
               lVal : 
         structName : Ident { 
           funcType : Ident 
