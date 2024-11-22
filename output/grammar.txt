@@ -92,7 +92,7 @@ structBlockItem -> decl structBlockItem
 structBlockItem -> stmt structBlockItem
 structBlockItem -> $
 switchDecl -> switch ( exp ) { caseDecl defaultCaseDecl }
-defaultCaseDecl -> default : { switchBlockElem breakDecl } 
+defaultCaseDecl -> default : { blockItem breakDecl } 
 defaultCaseDecl -> $
 caseDecl -> $ 
 caseDecl -> argCaseDecl
