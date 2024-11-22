@@ -95,9 +95,6 @@ switchDecl -> switch ( exp ) { caseDecl defaultCaseDecl }
 defaultCaseDecl -> default : { blockItem breakDecl } 
 defaultCaseDecl -> $
 caseDecl -> $ 
-caseDecl -> argCaseDecl
-caseDecl -> argCaseDecl caseDecl
-argCaseDecl -> $
-argCaseDecl -> case constExp : { blockItem breakDecl }
+caseDecl -> case constExp : { blockItem breakDecl } caseDecl
 breakDecl -> $ 
 breakDecl -> break ;
