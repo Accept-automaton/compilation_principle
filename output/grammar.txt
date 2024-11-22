@@ -97,6 +97,7 @@ defaultCaseDecl -> $
 caseDecl -> $ 
 caseDecl -> argCaseDecl
 caseDecl -> argCaseDecl caseDecl
+argCaseDecl -> $
 argCaseDecl -> case constExp : { blockItem breakDecl }
 breakDecl -> $ 
 breakDecl -> break ;
