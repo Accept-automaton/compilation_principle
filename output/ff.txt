@@ -5,30 +5,28 @@ Tag
 )
 *
 ,
+struct
+%
+$
 +
 int
-void
+;
+{
 INT
 (
 Ident
-28
->=
-{
-;
-%
-$
-struct
+=
+>
 ==
 const
 <
-=
-29
->
 }
 !=
 /
 <=
 return
+>=
+void
 **************not t*****************
 structBlockItem
 structBlock
@@ -135,51 +133,51 @@ addExpAtom
         addExpAtom -> $ + - 
 
 ************** FOLLOW *************
-   structBlockItem : } 28 29 
+   structBlockItem : } 
        structBlock : ; Ident 
-         structDef : } - void const ! # return 28 { ; ( Ident INT + int struct 
-             opVar : } - void const ! # return 28 { ; ( Ident INT + int struct 
-        structDecl : } - void const ! # return 28 { ; ( Ident INT + int struct 
+         structDef : } - void const ! ; { ( Ident INT + int struct # return 
+             opVar : } - void const ! ; { ( Ident INT + int struct # return 
+        structDecl : } - void const ! ; { ( Ident INT + int struct # return 
           constExp : ; , 
      assignExpAtom : , ; ) 
          assignExp : , ; ) 
          eqExpAtom : , = ) ; 
         relExpAtom : , == != ; = ) 
             relExp : , != ) == ; = 
-              stmt : } ( Ident - void const ! + return 29 { ; INT int struct 
+              stmt : } ( Ident - void const ! + ; { INT int struct return 
               lVal : 
         structName : Ident { 
           funcType : Ident 
-           opBlock : struct ; { 28 # return int + ! const void - INT Ident ( } 
+           opBlock : # } ( Ident - void const ! + ; { INT int struct return 
          argVarDef : , ; 
              bType : Ident 
       argStructDef : ; 
          blockItem : } 
             addExp : , ; <= = > ) >= != < == 
-           funcDef : # return struct { ; int + ! const void - INT Ident ( } 28 29 
+           funcDef : # } ( Ident - void const ! + ; { INT int struct return 
         funcFParam : ) , 
            initVal : ; , 
       argFunctionR : ) 
         argVarDecl : ; 
           constDef : ; , 
-             block : } 28 - void const ! # return 29 { ; ( Ident INT + int struct 
+             block : } - void const ! ; { ( Ident INT + int struct # return 
             mulExp : ) ; = - , >= <= + == != < > 
           compUnit : # 
            program : # 
       constInitVal : , ; 
-              decl : } ( Ident - void const ! + return # 28 { ; INT int struct 
+              decl : # } ( Ident - void const ! + ; { INT int struct return 
             varDef : ; , 
           argConst : ; 
              eqExp : , ) ; = 
       argFunctionF : ) 
             argExp : ; 
-         constDecl : } - void const ! # return 28 { ; ( Ident INT + int struct 
+         constDecl : } - void const ! ; { ( Ident INT + int struct # return 
         primaryExp : ) ; = - <= + == % , < * != > >= / 
                exp : ; , ) 
           unaryExp : ; ) = , * % >= > < == != + / <= - 
             number : ; ) / >= > != % , * < == + <= = - 
        funcFParams : ) 
-           varDecl : } - void const ! # return 28 { ; ( Ident INT + int struct 
+           varDecl : } - void const ! ; { ( Ident INT + int struct # return 
            unaryOp : INT ( Ident - + ! 
           callFunc : ) ; = - <= + == % , < * != > >= / 
        funcRParams : ) 
